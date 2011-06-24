@@ -5,7 +5,7 @@ require File.join(File.dirname(__FILE__), "/../../../agent/integration.rb")
 
 describe "integration agent" do
 
-    before do
+    before :all do
         @agent = MCollective::Test::RemoteAgentTest.new("integration").plugin
     end
 
