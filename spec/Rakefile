@@ -10,7 +10,7 @@ end
 
 desc "Run integration tests"
 RSpec::Core::RakeTask.new(:integration) do |t|
-    t.pattern = 'tests/integration/**/*_spec.rb'
+    t.pattern = 'tests/integration/**/*_test.rb'
     t.rspec_opts = File.read("spec.opts").chomp
 end
 
