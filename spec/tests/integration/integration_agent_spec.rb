@@ -1,17 +1,7 @@
 #! /usr/bin/env ruby
 
-require 'rubygems'
-require 'rspec'
-require 'mcollective'
-require 'mcollective/test'
-
-RSpec.configure do |config|
-    config.include(MCollective::Test::Matchers)
-end
-
-require File.join(File.dirname(__FILE__), "/../../../agent/integration.rb")
 require File.join(File.dirname(__FILE__), "/../../spec_helper.rb")
-
+require File.join(File.dirname(__FILE__), "/../../../agent/integration.rb")
 
 describe "integration agent" do
 

@@ -14,10 +14,4 @@ RSpec::Core::RakeTask.new(:integration) do |t|
     t.rspec_opts = File.read("spec.opts").chomp
 end
 
-desc "Run all specs"
-RSpec::Core::RakeTask.new(:all) do |t|
-    t.pattern = 'tests//**/*_spec.rb'
-    t.rspec_opts = File.read("spec.opts").chomp
-end
-
-task :default => [:all]
+task :default => [:unit]

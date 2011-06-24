@@ -2,6 +2,12 @@
 
 require File.join([File.dirname(__FILE__), '../../spec_helper'])
 
+RSpec.configure do |config|
+    config.before :each do
+        MCollective::PluginManager.clear
+    end
+end
+
 describe "integration agent" do
 
     before do
