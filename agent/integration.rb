@@ -10,11 +10,11 @@ module MCollective
                         :timeout        => 60
 
             def before_processing_hook(msg, connection)
-                reply[:test_sender] = Config.instance.pluginconf["integration.identity"] || "integration"
+                reply[:test_sender] = Config.instance.pluginconf["integration.identity"] || Config.instance.identity
             end
 
             def after_processing_hook
-                reply[:post_sender] = Config.instance.pluginconf["integration.identity"] || "integration"
+                reply[:post_sender] = Config.instance.pluginconf["integration.identity"] || Config.instance.indentity
             end
 
             action "echo" do

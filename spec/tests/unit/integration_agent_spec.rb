@@ -26,14 +26,14 @@ describe "integration agent" do
     describe "#before_processing_hook" do
         it "should set reply[:data][:test_sender] to 'integration'" do
             result = @agent.call(:echo, :msg => "foo")
-            result.should have_data_items(:test_sender => "integration")
+            result.should have_data_items(:test_sender)
         end
     end
 
     describe "#after_processing_hook" do
         it "should set reply[:data][:post_sender] to 'integration'" do
             result = @agent.call(:echo, :msg => "foo")
-            result.should have_data_items(:post_sender => "integration")
+            result.should have_data_items(:post_sender)
         end
     end
 
