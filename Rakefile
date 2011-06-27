@@ -1,4 +1,5 @@
 require 'tmpdir'
+require 'yaml'
 
 desc "Run tests"
 task :test do
@@ -6,24 +7,30 @@ task :test do
 end
 
 task :integration_test do
-    raise "Please specify a stomp user using MC_INTEGRATION_USER" unless ENV["MC_INTEGRATION_USER"]
-    raise "Please specify a stomp password using MC_INTEGRATION_PASS" unless ENV["MC_INTEGRATION_PASS"]
-    raise "Please specify a stomp host using MC_INTEGRATION_SERVER" unless ENV["MC_INTEGRATION_SERVER"]
-
     begin
         tmpdir = Dir.mktmpdir("mcintegration")
+        gemdir = File.join([tmpdir, "gem"])
+        stompconfig = File.join([tmpdir, "stompserver.conf"])
 
         puts "Creating integration setup in #{tmpdir}"
 
         chdir tmpdir
 
+        ENV["GEM_HOME"] = gemdir
+
+        sh %{gem install stomp --no-rdoc --no-ri}
+        sh %{gem install stompserver --no-rdoc --no-ri}
         sh %{git clone git://github.com/ripienaar/mcollective-test.git}
         sh %{git clone git://github.com/ripienaar/mcollective-collective-builder.git}
 
-        ENV["MC_SERVER"] = ENV["MC_INTEGRATION_SERVER"]
-        ENV["MC_USER"] = ENV["MC_INTEGRATION_USER"]
-        ENV["MC_PASSWORD"] = ENV["MC_INTEGRATION_PASS"]
-        ENV["MC_PORT"] = ENV["MC_INTEGRATION_PORT"] || "6163"
+        File.open(stompconfig, "w") {|f| f.write YAML.dump({:port => 7000, :daemon => true, :debug => true})}
+
+        sh %{#{gemdir}/bin/stompserver --config #{stompconfig}}
+
+        ENV["MC_SERVER"] = ENV["MC_INTEGRATION_SERVER"] || "localhost"
+        ENV["MC_USER"] = ENV["MC_INTEGRATION_USER"] || "mcollective"
+        ENV["MC_PASSWORD"] = ENV["MC_INTEGRATION_PASS"] || "secret"
+        ENV["MC_PORT"] = ENV["MC_INTEGRATION_PORT"] || "7000"
 
         ENV["MC_NAME"] = "mcollective_integration"
         ENV["MC_SUB"] = "mcollective_integration"
@@ -54,6 +61,11 @@ task :integration_test do
         begin
             chdir File.join([tmpdir, "mcollective-collective-builder"])
             sh %{rake stop}
+
+            if File.exist?(File.join(tmpdir, "log", "stompserver.pid"))
+                pid = File.read(File.join(tmpdir, "log", "stompserver.pid"))
+                sh %{kill -9 #{pid}}
+            end
         rescue
         end
 
