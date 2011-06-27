@@ -14,7 +14,7 @@ module MCollective
             end
 
             def after_processing_hook
-                reply[:post_sender] = Config.instance.pluginconf["integration.identity"] || Config.instance.indentity
+                reply[:post_sender] = Config.instance.pluginconf["integration.identity"] || Config.instance.identity
             end
 
             action "echo" do
