@@ -26,7 +26,7 @@ describe "integration agent" do
 
         it "should fail if message is not validate" do
             result = @agent.validation(:msg => "notvalidate")
-            result.should be_invalid_data_error
+            result.should be_unknown_error
         end
     end
 

@@ -11,7 +11,7 @@ end
 describe "integration agent" do
 
     before do
-        agent_file = File.join("/home/psy/code/mcollective/mcollective-collective-builder/plugins/agent/integration.rb")
+        agent_file = File.join(File.dirname(__FILE__), "../../../agent/integration.rb")
         @agent = MCollective::Test::LocalAgentTest.new("integration", :agent_file => agent_file).plugin
 
         @agent.config.stubs(:pluginconf).returns({"integration.identity" => nil})
