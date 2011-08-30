@@ -19,6 +19,7 @@ task :integration_test do
         ENV["GEM_HOME"] = gemdir
 
         sh %{gem install stomp --no-rdoc --no-ri}
+        sh %{gem install hoe --version 1.8.2 --no-rdoc --no-ri}
         sh %{gem install stompserver --no-rdoc --no-ri}
         sh %{git clone git://github.com/ripienaar/mcollective-test.git}
         sh %{git clone git://github.com/ripienaar/mcollective-collective-builder.git}
@@ -34,8 +35,8 @@ task :integration_test do
 
         ENV["MC_NAME"] = "mcollective_integration"
         ENV["MC_SUB"] = "mcollective_integration"
-        ENV["MC_VERSION"] = "master"
-        ENV["MC_SOURCE_BRANCH"] = "master"
+        ENV["MC_VERSION"] = "1.2.1"
+        ENV["MC_SOURCE_BRANCH"] = "1.2.x"
         ENV["MC_COUNT"] = "5"
         ENV["MC_COUNT_START"] = "0"
         ENV["MC_SSL"] = "no"
